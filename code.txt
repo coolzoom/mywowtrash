@@ -1,0 +1,49 @@
+```
+        /// <summary>
+        /// read all objs test
+        /// https://www.ownedcore.com/forums/world-of-warcraft/world-of-warcraft-bots-programs/wow-memory-editing/971953-object-manager-help.html
+        /// </summary>
+        public void ReadObjsTest()
+        {
+
+            Dictionary<long, ObjectEntry> _objects = new Dictionary<long, ObjectEntry> { };
+
+            UInt64 objmgrAddress = (UInt64)Client.Proc.MainModule.BaseAddress + caddr.Base_ObjectMgrPtr;
+
+            UInt64 managerBase = Client.Read<UInt64>((IntPtr)objmgrAddress);
+
+            var maxCount = Client.Read<int>((IntPtr)managerBase);
+            var startADD = Client.Read<UInt64>((IntPtr)managerBase + 8);
+
+            //read ptr array
+            for (int i = 0; i < maxCount; i++)
+            {
+                //var ptr = Client.Read<IntPtr>((IntPtr)startADD + 8 * i);
+                //ptrArray.Add(ptr);
+
+                var firstPointer = Client.Read<IntPtr>((IntPtr)startADD + 8 * i);
+                while (firstPointer != IntPtr.Zero)
+                {
+                    var secondPointer = Client.Read<IntPtr>(firstPointer + 0x18);
+                    // 'Second Pointer' is the actual entity base address.
+
+                    var guid = Client.Read<long>(secondPointer + 0x18);
+                    var guid2 = Client.Read<long>(secondPointer + 0x20);
+                    var type = Client.Read<byte>(secondPointer + 0x10);
+                    if (type > 13 || guid == 0) continue;
+     
+                    if (_objects.ContainsKey(guid))
+                    {
+                        _objects[guid].Updated = true;
+                    }
+                    else
+                    {
+                        _objects.Add(guid, new ObjectEntry((long)secondPointer, type, false, guid, guid2));
+                    }
+
+                    firstPointer = Client.Read<IntPtr>(firstPointer);
+                }
+            }
+        }
+
+```
