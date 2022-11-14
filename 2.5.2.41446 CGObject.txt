@@ -1,0 +1,44 @@
+class WObject
+{
+public:
+	char pad_0008[8]; //0x0008
+	class UnitField* sUnitField; //0x0010
+	char pad_0018[8]; //0x0018
+	TypeId Type; //0x0020
+	char pad_0021[55]; //0x0021
+	WGuid Guid; //0x0058
+	char pad_0060[5464]; //0x0060
+	Vector3 GetUnitPositionModify; //0x15B8
+	char pad_15C4[44]; //0x15C4
+	Vector3 anchor_position; //0x15F8
+	float anchor_facing; //0x1604
+	float anchor_pitch; //0x1608
+	uint32_t MoveTime; //?? 0x160C
+	C3Vector direction; //0x1610
+	Vector2 direction_2d; //0x161C
+	float unk01;
+	float unk02;
+	float unk03;
+	uint32_t StopFall; // 0x1628
+	float fall_start_elev_1; //DC
+	float CurrentSpeed; //0x1638
+	float WalkSpeed;    //0x163C
+	float RunForwardSpeed; //0x1640
+	float RunBackwardsSpeed; //0x1644
+	float SwimmingSpeed; //0x1648
+	float SwimBackwardsSpeed; //0x164C
+	float FlyForwardSpeed; //0x1650
+	float FlyBackwardsSpeed2; //0x1654
+	float Player_rotationspeed; //0x1658
+	char pad_165C[8]; //0x165C
+	float StartofJumpHeight; //0x1664  Sets Starting jumpheight will dc you after a few ms...
+	char pad_1668[32]; //0x1668
+	uint64_t unk04; //0x1688
+	float unk05; //0x1690    
+	float Flagunk; //0x1694  Default value: 0.398, Falls through ground on: 0 <=.  Increasing value will bounce back the character. Test at high alt...
+	uint32_t MovementFlags; //0x1698 MovementFlags 
+	char pad_169C[460]; //0x169C
+	float Player_scale; //0x1868
+	char pad_186C[2104]; //0x186C
+
+	virtual ~WObject()

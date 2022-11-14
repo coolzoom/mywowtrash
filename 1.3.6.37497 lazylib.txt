@@ -1,0 +1,560 @@
+using System.Reflection;
+
+
+namespace LazyLib.Wow
+{
+    public class PublicPointers
+    {
+        /// <summary>
+        /// Globals
+        /// </summary>
+        public enum Globals
+        {
+            PlayerName = 0x2994D88,
+        }
+
+        /// <summary>
+        /// InGame
+        /// </summary>
+        public enum InGame
+        {
+            InGame = 0x28B6368,
+            LoadingScreen = 0x25812F0,
+            RealmName = 0x28022E0,
+        }
+
+    }
+
+    internal class Pointers
+    {
+        /// <summary>
+        /// ActionBar
+        /// </summary>
+        internal enum ActionBar
+        {
+            ActionBarFirstSlot = 0x28C21E0,
+            ActionBarBonus = ActionBarFirstSlot + 0x240,
+            CurrentActionBar = 0x28C2834,
+        }
+
+        /// <summary>
+        /// Battleground
+        /// </summary>
+        internal enum Battleground
+        {
+            BattlegroundStartTickcount = 0x28C0624,
+            Timestamp = 0x25D383C,
+            IsBattlegroundFinished = 0x28C08CC,
+            BattlegroundWinner = 0x28C08D0,
+            BattlegroundInfo = 0x24EF1C0,
+            UISelectedBattlegroundId = 0x290401B,
+        }
+
+        /// <summary>
+        /// Corpse
+        /// </summary>
+        internal enum Corpse
+        {
+            X = 0x0,
+            Y = X + 0x4,
+            Z = X + 0x8,
+        }
+
+        /// <summary>
+        /// Party
+        /// </summary>
+        internal enum Party
+        {
+            PartyOffset = 0x28C0480,
+            IsInGroupHome = 0x28C0480,
+            IsInGroupInstance = 0x28C0488,
+            NumOfPlayers = 0x178,
+            NumOfPlayers_SuBGroup = 0x17C,
+            PlayerGuid = 0x10,
+        }
+
+        /// <summary>
+        /// AutoLoot
+        /// </summary>
+        internal enum AutoLoot
+        {
+            Pointer = 0x28B5F10,
+            Offset = 0x5C,
+        }
+
+        /// <summary>
+        /// ClickToMove
+        /// </summary>
+        internal enum ClickToMove
+        {
+            Pointer = 0x28B5EF0,
+            Offset = 0x5C,
+        }
+
+        /// <summary>
+        /// Reversed from CGUnit_C__GetCreatureRank 
+        /// </summary>
+        internal enum CgUnitCGetCreatureRank
+        {
+            Offset1 = 0x17B8,
+            Offset2 = 0x34,
+        }
+
+        /// <summary>
+        /// reversed from CGUnit_C__GetCreatureType 
+        /// </summary>
+        internal enum CgUnitCGetCreatureType
+        {
+            Offset1 = 0x17B8,
+            Offset2 = 0x30,
+        }
+
+        /// <summary>
+        /// reversed from CGWorldFrame__GetActiveCamera
+        /// </summary>
+        internal enum CgWorldFrameGetActiveCamera
+        {
+            CameraPointer = 0x28B6EC0,
+            CameraOffset = 0x3330,
+            CameraX = 0x8,
+            CameraY = 0xC,
+            CameraZ = 0x10,
+            CameraMatrix = 0x14,
+        }
+
+        /// <summary>
+        /// Search for CGUnit_C::GetSkinnableType_Checked 
+        /// </summary>
+        internal enum Skinning
+        {
+            SkinnableFlags1 = 0x17B8,
+            SkinnableFlags2 = 0x0CC,
+        }
+
+        /// <summary>
+        /// AuctionHouse
+        /// </summary>
+        internal enum AuctionHouse
+        {
+            AuctionListCount = 0x2901FF8,
+            AuctionList = 0x2902000,
+            AuctionOwnerCount = 0x2902018,
+            AuctionOwnerList = 0x2902020,
+            AuctionBidderCount = 0x2902038,
+            AuctionBidderList = 0x2902040,
+        }
+
+        /// <summary>
+        /// reversed from CGActionBar__IsCurrentAction
+        /// </summary>
+        internal enum AutoAttack
+        {
+            IsAutoRepeatingSpell = 0x25EE650,
+            IsInMelee = 0xAF6C,
+            IsInMelee1 = 0x18A8,
+            AutoAttackFlag = 0xEE8,
+            AutoAttackMask = 0xEEC,
+            ///Address seems to show the GUID of the Auto Attack target
+            AutoAttackGUID = 0xAF6C,
+            ///Shows 0x06 when not wanding, 0x0C or 0x0E when wanding
+            ///Wanding = 0xEF8
+        }
+
+        /// <summary>
+        /// CastingInfo 
+        /// </summary>
+        internal enum CastingInfo
+        {
+            IsCasting = 0x1990,
+            ChanneledCasting = 0x670,
+        }
+
+        /// <summary>
+        /// reversed from CGWorldFrame__GetActiveCamera
+        /// </summary>
+        internal enum Chat : uint
+        {
+            ChatStart = 0x2883EA0,
+            chatBufferPos = 0x28B39C0,
+            OffsetToNextMsg = 0xCB8,
+            MsgSenderGuid = 0x00,
+            MsgSenderName = 0x34,
+            MsgFullMessage = 0xE6,
+            MsgChatType = 0xCA0,
+            MsgChannelNum = 0xCA4,
+            MsgTimeStamp = 0xCB0,
+            ChatQueueDepth = 0x3C,
+        }
+
+        /// <summary>
+        /// BlueChat
+        /// </summary>
+        internal enum Messages
+        {
+            EventMessage = 0x28B51D0,
+        }
+
+        /// <summary>
+        /// Container
+        /// </summary>
+        internal enum Container
+        {
+            EquippedBagGUID = 0x28C0470,
+        }
+
+        /// <summary>
+        /// Globals
+        /// </summary>
+        internal enum Globals
+        {
+            RedMessage = 0x28B51D0,
+            MouseOverGUID = 0x28B6370,
+            LootWindow = 0x28C5D30,
+            ChatboxIsOpen = 0x25F8D64,
+            CursorType = 0x294DF80,
+            CursorType2 = CursorType + 0x04,
+            SelectedSpellId = 0x28D4698,
+            CGGameUI__m_cursorItem = 0x28B5160,
+            CGGameUI__m_cursorSpell = 0x28B5188,
+            IsMouseButtonPressed = 0x25D388C,
+            Indoors = 0x25D7879,
+            IsBobbing = 0x14C,
+            ArchFacing = 0x198,
+            ArchFacingOffset2 = 0x30,
+        }
+
+        /// <summary>
+        /// KeyBinding
+        /// </summary>
+        internal enum KeyBinding
+        {
+            NumKeyBindings = 0x28C4010,
+            First = 0x188,
+            Next = 0x178,
+            Key = 0x30,
+            Command = 0x58,
+        }
+
+        /// <summary>
+        /// Quest
+        /// </summary>
+        internal enum Quest
+        {
+            m_quests = 0x28C4780,
+            m_numQuests = 0x28C4610,
+            m_currentQuest = 0x28E8C74,
+            m_questTitle = 0x0,
+            m_gossipQuests = 0x28BB028,
+            QuestsCompleted = 0x24ED2C8,
+            GetNumQuestChoices = 0x28F81C0,
+            GetQuestReward = 0x28F81C8,
+            CGQuestInfo_Available__Quest = 0x28F78C0,
+            CGQuestInfo_Available__Num = 0x28E8C8C,
+            CGQuestInfo_Active__Num = 0x28E8C90,
+            CGQuestInfo_Active__Quest = 0x28EE114,
+        }
+
+        /// <summary>
+        /// ObjectManager
+        /// </summary>
+        internal enum ObjectManager
+        {
+            CurMgrPointer = 0x2694158,
+            LocalPlayerGUID = 0x2994D70,
+            TargetGUID = 0x24ED8A0,
+            PetGUID = 0x28C52FC,
+            StorageField = 0x10,
+            ObjectType = 0x20,
+            NextObject = 0x70,
+            FirstObject = 0x18,
+            LocalGUID = 0x58,
+        }
+
+        /// <summary>
+        /// Script_UnitAffectingCombat 
+        ///v4 = v2 && (*(_DWORD *)(*(_DWORD *)(v2 + 284) + 316) >> 19) & 1; 
+        /// </summary>
+        internal enum InCombat
+        {
+            Mask = 19,
+            Offset2 = 0x158,
+            Offset1 = 0x188,
+        }
+
+        /// <summary>
+        /// Runes 
+        /// </summary>
+        internal enum Runes
+        {
+            RuneTypes = 0x0,
+            RunesOffset = 0x0,
+            //Offset is usually RuneTypes + 0x64
+        }
+
+        /// <summary>
+        /// CGUnit_C__GetShapeshiftFormId 
+        /// </summary>
+        internal enum ShapeshiftForm
+        {
+            BaseAddressOffset1 = 0x188,
+            BaseAddressOffset2 = 0x27B,
+        }
+
+        /// <summary>
+        /// SpellCooldown
+        /// </summary>
+        internal enum SpellCooldown : uint
+        {
+            CooldPown = 0x24DA7E0,
+        }
+
+        /// <summary>
+        /// Search for PowerTypePointer  
+        /// </summary>
+        internal enum PowerIndex
+        {
+            PowerIndexArrays = 0x263AA50,
+            Multiplicator = 13,
+        }
+
+        /// <summary>
+        /// Swimming 
+        /// </summary>
+        internal enum Swimming
+        {
+            Pointer = 0x198,
+            Offset = 0x58,
+            Mask = 0x100000,
+        }
+
+        /// <summary>
+        /// IsFlying 
+        /// </summary>
+        internal enum IsFlying
+        {
+            Pointer = 0x198,
+            Offset = 0x58,
+            Mask = 0x1000000,
+        }
+
+        /// <summary>
+        /// IsFalling 
+        /// </summary>
+        internal enum IsFalling
+        {
+            Pointer = 0x198,
+            Offset = 0x58,
+            Mask = 0x1000000,
+        }
+
+        /// <summary>
+        /// reversed from CGUnit_C__GetAura 
+        /// </summary>
+        internal enum UnitAuras : uint
+        {
+            AuraCount1 = 0x1AC8,
+            AuraCount2 = 0x1AD0,
+            AuraTable1 = 0x1AD0,
+            AuraTable2 = 0x1AC8,
+            AuraSize = 0xA8,
+            AuraSpellId = 0x88,
+            AuraStack = 0x39,
+            TimeLeft = 0x40,
+            OwnerGUID = 0x20,
+            AuraTableOffset = 0x00,
+            AuraFlags = 0x90,
+            AuraLevel = 0x92,
+        }
+
+        /// <summary>
+        /// UnitName 
+        /// </summary>
+        internal enum UnitName : uint
+        {
+            ObjectName1 = 0x478,
+            ObjectName2 = 0xE0,
+            PlayerNameGUIDOffset = 0x20,
+            PlayerNameStringOffset = 0x31,
+            PlayerNameCacheNext = 0x0,
+            PlayerNameCachePointer = 0x22BBB18,
+            UnitName1 = 0x17B8,
+            UnitName2 = 0xE0,
+        }
+
+        /// <summary>
+        /// UnitSpeed 
+        /// </summary>
+        internal enum UnitSpeed
+        {
+            Pointer1 = 0x198,
+            Pointer2 = 164,
+        }
+
+        /// <summary>
+        /// WowObject 
+        /// </summary>
+        internal enum WowObject
+        {
+            X = 0x1600,
+            Y = X + 0x4,
+            Z = X + 0x8,
+            RotationOffset = X + 0x10,
+            Pitch = X + 0x14,
+            GameObjectX = 0x1B0,
+            GameObjectY = GameObjectX + 0x4,
+            GameObjectZ = GameObjectX + 0x8,
+            GameObjectRotation = GameObjectX + 0x10,
+            TransportGUID = 0x15F0,
+        }
+
+        /// <summary>
+        /// Zone 
+        /// </summary>
+        internal enum Zone : uint
+        {
+            ZoneText = 0x28B5128,
+            ZoneID = 0x28B5D8C,
+            SubZoneText = 0x28B5130,
+            ContinentId = 0x22D697C,
+            GetContinentIDOffset = 0xE0,
+        }
+
+        /// <summary>
+        /// UiFrame 
+        /// </summary>
+        internal enum UiFrame
+        {
+            ScrWidth = 0x22BA8B4,
+            ScrHeight = 0x22BA8B8,
+            FrameBase = 0x25D4288,
+            CurrentFramePtr = 0x25D4288,
+            CurrentFrameOffset = 0x1A0,
+            FirstFrame = 0xCD0,
+            NextFrame = 0xCC0,
+            LastFrame = 0x0CC8,
+            RegionsFirst = 0x1A8,
+            RegionsNext = 0x198,
+            Visible = 0xC8,
+            Visible1 = 0xA,
+            Visible2 = 1,
+            LabelText = 0x188,
+            Name = 0x20,
+            FrameBottom = 0x90,
+            FrameLeft = 0x94,
+            FrameTop = 0x98,
+            FrameRight = 0x9C,
+            EffectiveScale = 0xC0,
+            ParentFrame = 0xD0,
+            IconNumber = 0xF0,
+            ButtonEnabledPointer = 0x210,
+            ButtonEnabledMask = 0xF,
+            ButtonChecked = 0x268,
+            EditBoxText = 0x238,
+        }
+
+    }
+
+}
+
+Hi, just starting up in the wow scene. Here are things I'm finding, will update as I go
+
+Tested Ones
+
+ClntObjMgrEnumVisibleObjectsPtr at 0xD39130
+CIntObjMgrEnumVisibleObjects at 0xD39080
+CIntObjMgrEnumVisibleUnitsPtr at 0xD391D0
+
+Script_GetSpellCooldown at 0xFB9BF0
+Script_C_GetSpellCooldown at 0x96DDD0
+
+GameTime (milliseconds, unint32_t) at 0x25D383C
+
+IsSpellKnown bool(__fastcall*)(int32_t spellId, int32_t isPet) at 0x0FD5430
+FindSlotBySpellId int64_t(__fastcall*)(int32_t spellId, int32_t isPet) at 0x0FCD550
+CastSpell int64_t(__fastcall*)(int32_t spellId, int32_t isPet, uintptr_t target, uint8_t unk, uint8_t unk2) at 0x0FCB240
+
+Found a couple goodie ones, I'm passing in pointer to object for move to and attack but it probably would crash if it wasn't a pointer to a unit. I haven't abstracted the different types yet so everything is an object and then I'm just casting descriptors to their correct one.
+
+Move To (CTM) void(__fastcall*)(pCGObject localPlayer, Vector3 destination) at 0xAB6D30
+Move To And Attack (CTM) void(__fastcall*)(pCGObject localPlayer, pCGObject target, float_t precision?) at 0xAA8B80
+
+
+Targeting ones I found
+
+uintptr_t spriteLeftClick = 0xF68010;
+reinterpret_cast<int64_t(__fastcall*)(pWowGuid)>(base + spriteLeftClick)(guid);
+
+uintptr_t spriteRightClick = 0xF68400;
+reinterpret_cast<int64_t(__fastcall*)(pWowGuid)>(base + spriteRightClick)(guid);
+
+
+Ones I'm unsure of
+FrameScript_RegisterFunction at 0x3A4CE0
+
+
+  ////////////////////////
+	      // 1.13.6.37497//
+             ////////////////////////
+
+	// base address
+	static inline uintptr_t Base;
+
+	// framescript
+	static inline uintptr_t FrameScriptExecute = 0x3A2DA0; //  
+	static inline uintptr_t FrameScriptGetText = 0x39D160;	// 
+	static inline uintptr_t FrameScriptRegister = 0x3A4CE0;	// 
+
+	// lua
+	static inline uintptr_t PushGuid = 0x3A9860;			// 
+	static inline uintptr_t PushNumber = 0x19596B0;			//  
+	static inline uintptr_t ToLString = 0x195A830;			// 
+	static inline uintptr_t ToNumber = 0x0195A7B0;			// ToNumber/ToInteger
+	static inline uintptr_t lua_gettop = 0x1958B00;			// 
+	static inline uintptr_t lua_settop = 0x195A550;			// 
+
+	static inline uintptr_t LoadFile = 0x0;					// 
+	static inline uintptr_t LuaState = 0x0;					// 
+	static inline uintptr_t PCall = 0x0;					// 
+	static inline uintptr_t ToInteger = 0x195A7B0;			// ToNumber/ToInteger
+
+	static inline uintptr_t PushClosure = 0x0;				// 
+	static inline uintptr_t PushString = 0x19596D0;			// 
+	static inline uintptr_t LuaGetTable = 0x1958AD0;
+
+	static inline uintptr_t lua_isstring = 0x19B6290;		// 
+	static inline uintptr_t luaL_error = 0x195B450;			// 
+	static inline uintptr_t lua_pushboolean = 0x1959330;	// 
+	static inline uintptr_t lua_createtable = 0x0;			// 
+
+	// State
+	static inline uintptr_t InGame = 0x25C7388; 
+
+	// object manager
+	static inline uintptr_t ClntObjMgrEnumVisibleObjectsPtr = 0xD39130;
+	static inline uintptr_t ObjMgrIsValid = 0xD3A010; // OK					
+
+	//Fastcall CTM(__int64 a1, __int64 a2) 
+	static inline uintptr_t ClickToMove = 0xAEEF00;
+
+	// pointers
+	static inline uintptr_t InvalidPtrCheckMin = 0x25FBA38; 
+	static inline uintptr_t InvalidPtrCheckMax = 0x25FBA40;  
+	static inline uintptr_t CanPerformAction = 0x00; 
+	static inline uintptr_t HardwareEventPtr = 0x00; 
+
+	static inline uintptr_t Int3 = 0xFEADC;		// CC CC CC CC
+
+	// units
+	static inline uint16_t AnimationStatus = 0x14C;
+	static inline uint16_t Owner = 0x534;
+	static inline uint8_t Type = 0x20;
+
+	//Corpse 
+	static inline uintptr_t Corpsex = 0x24E57A0;
+	static inline uintptr_t Corpsey = 0x24E57A4;
+	static inline uintptr_t Corpsez = 0x24E57A8;
+
+	//Camera 
+	static inline  uintptr_t CameraMgr = 0x28B6EC0;				
+	static inline  uintptr_t CameraPtr = 0x3330;
+	

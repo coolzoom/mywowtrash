@@ -1,0 +1,33 @@
+local username = '123456@gmail.com' 
+local password = 'passwod'
+local account = 'WoW1' 
+local char_slot = 0 --character slot
+local realmname = 'realmname'
+if (AccountLogin and AccountLogin.UI.WoWAccountSelectDialog:IsShown()) then
+    C_Login.SelectGameAccount(account)
+elseif (AccountLogin and AccountLogin.UI:IsVisible()) then
+    AccountLogin.UI.AccountEditBox:SetText(username)
+    AccountLogin.UI.PasswordEditBox:SetText(password)
+    AccountLogin_Login()
+elseif (RealmListUI and RealmListUI:IsVisible()) then
+    local categories = C_RealmList.GetAvailableCategories()
+    for i = 1, #categories  do
+        local realms = C_RealmList.GetRealmsInCategory(categories[i])
+        for j = 1, #realms  do
+            local realmAddr = realms[j]
+            local realname, numChars = C_RealmList.GetRealmInfo(realmAddr)
+            if realname == realmname then
+                RealmList.selectedRealm = realmAddr
+                RealmList_Update()
+                RealmList_OnOk()
+            end
+        end
+    end
+elseif (CharacterSelect and CharacterSelect:IsVisible()) then
+    if GetServerName() ~= realmname and (not RealmList or not RealmList:IsVisible()) then
+        CharacterSelect_ChangeRealm()
+    else
+        CharacterSelect_SelectCharacter(char_slot)
+        CharacterSelect_EnterWorld()
+    end
+end

@@ -1,0 +1,69 @@
+class UnitField
+{
+public:
+	char pad_0000[20]; //0x0000
+	DWORD DynamicFlags; //0x0014
+	char pad_0018[36]; //0x0018
+	uint32_t GameObjectDisPlayID; //0x003C
+	uint32_t GameObjectFlag; //0x0040
+	char pad_0044[8]; //0x0044
+	uint8_t critter; //0x004C
+	char pad_004D[15]; //0x004D
+	uint8_t summonedBy; //0x005C
+	char pad_005D[63]; //0x005D
+	WGuid Target; //0x009C
+	char pad_00A4[20]; //0x00A4
+	uint32_t SpellID; //0x00C4
+	uint32_t SpellDuration; //0x00C8
+	char pad_00CC[4]; //0x00CC  5
+	uint8_t Race; //0x00D0
+	uint8_t ClassID; //0x00D1
+	uint8_t PlayerClassID; //0x00D2
+	uint8_t Sex; //0x00D3
+	uint32_t DisplayPower; //0x00D4
+	uint32_t OverrideDisplayPowerID; //0x00D8
+	uint32_t Health; //0x00DC
+	char pad_00E0[4]; //0x00E0
+	uint32_t Energy; //0x00E4
+	char pad_00E8[20]; //0x00E8
+	uint32_t MaxHealth; //0x00FC
+	char pad_0100[4]; //0x0100
+	uint32_t MaxEnergy; //0x0104
+	char pad_0108[44]; //0x0108
+	uint32_t N000004A4; //0x0134
+	char pad_0138[32]; //0x0138
+	uint64_t RaceID; //0x0158
+	char pad_0160[20]; //0x0160
+	DWORD UnitFlag1; //0x0174
+	DWORD UnitFlag2; //0x0178
+	DWORD UnitFlag3; //0x017C
+	char pad_0180[124]; //0x0180
+	uint32_t Strength; //0x01FC                   
+	uint32_t Agility; //0x0200
+	uint32_t Stamina; //0x0204
+	uint32_t Intelect; //0x0208
+	uint32_t Spirit; //0x020C
+	char pad_0210[40]; //0x0210
+	uint32_t Armor; //0x0238
+	uint32_t resistance_fire; //0x023C
+	uint32_t resistance_arcane; //0x0240
+	uint32_t resistance_nature; //0x0244
+	uint32_t resistance_frost; //0x0248
+	uint32_t resistance_shadow; //0x024C
+	char pad_0250[328]; //0x0250
+	uint32_t IsPlayerDead; //0x0398 Changes the skybox to blue
+	char pad_039C[1476]; //0x039C
+	float Drunk; //0x0960  Set to 0/255
+	char pad_0964[209004]; //0x0964
+
+	bool hasTarget(WGuid t)
+	{
+		if (this->Target == t)
+			return true;
+		else
+			return false;
+	}
+
+	//0x01BE // Stealth walking Animation
+}; //Size: 0x339D0
+static_assert(sizeof(UnitField) == 0x339D0);

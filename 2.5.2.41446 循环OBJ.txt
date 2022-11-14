@@ -1,0 +1,64 @@
+Func _Object_Manager_Traversal()
+	If Not ProcessExists($ProcessId) Then
+		_GUICtrlEdit_AppendText($sOutput, '错误 = 进程丢失' & @CRLF)
+		AdlibUnRegister("_Object_Manager_Traversal")
+	EndIf
+	
+	$InGame = $DM.ReadIntAddr($ProcessId, ($BaseAddr + $InGameFlag), 2)
+	If $InGame <> 4 Then
+		;ConsoleWrite('@@ Debug(' & @SCripTLineNumber & ') : $InGame = ' & $InGame & @CRLF) ;### Debug Console
+		Sleep(1000)
+		Return
+	EndIf
+
+	$Re_CurMgr = $DM.ReadIntAddr($ProcessId, ($BaseAddr + $CurMgrPointerAddr), 3)
+	If $Re_CurMgr <> $CurMgr Then
+		$CurMgr = $DM.ReadIntAddr($ProcessId, ($BaseAddr + $CurMgrPointerAddr), 3)
+		_GUICtrlEdit_AppendText($sOutput, @CRLF & '对象管理器地址更新 = ' & StringRegExpReplace(Hex($CurMgr), '(\A\d0+)', '0x') & @CRLF)
+		Return
+	EndIf
+
+	Dim $addr_1[] = [0], $addr_2[] = [0], $addr_3[] = [0], $addr_4[] = [0], $addr_5[] = [0], $addr_6[] = [0], $addr_7[] = [0], $addr_8[] = [0]
+	Local $A_All = 0
+	$NextObject = $DM.ReadIntaddr($ProcessId, ($CurMgr + $FirstObjectOffset), 3)
+;	ConsoleWrite('@@ Debug(' & @SCripTLineNumber & ') :第一个 = $NextObject = ' & $NextObject & @CRLF) ;### Debug Console
+	$ObjType = $DM.ReadIntaddr($ProcessId, ($NextObject + $Object_Type), 2)
+;	ConsoleWrite('@@ Debug(' & @SCripTLineNumber & ') :第一个 = $ObjType = ' & $ObjType & @CRLF) ;### Debug Console
+	While ((Mod($NextObject, 2) == 0) And($NextObject <> 0))
+		Switch $ObjType
+			Case $ObjectType_Item ;1
+				_ArrayAdd($addr_1, $NextObject)
+			Case $ObjectType_Container ;2
+				_ArrayAdd($addr_2, $NextObject)
+			Case $ObjectType_Unit ;3
+				_ArrayAdd($addr_3, $NextObject)
+			Case $ObjectType_Player ;4
+				_ArrayAdd($addr_4, $NextObject)
+			Case $ObjectType_ActivePlayer ;5
+				_ObjType_5($NextObject)
+				_ArrayAdd($addr_5, $NextObject)
+			Case $ObjectType_GameObject ;6
+				_ArrayAdd($addr_6, $NextObject)
+			Case $ObjectType_DynamicObject ;7
+				_ArrayAdd($addr_7, $NextObject)
+			Case $ObjectType_Corpse ;8
+				_ArrayAdd($addr_8, $NextObject)
+		EndSwitch
+		$NextObject = $DM.ReadIntaddr($ProcessId, $NextObject + $NextObjectOffset, 3)
+		$ObjType = $DM.ReadIntaddr($ProcessId, $NextObject + $Object_Type, 2)
+		$A_All += 1
+	WEnd
+	_GUICtrlEdit_AppendText($sOutput, @CRLF & '共获取到[' & $A_All & ']个对象' & @CRLF)
+	GUISetState(@SW_LOCK)
+	For $i = 0 To 7
+		If $A_All > 0 And UBound(Eval("addr_" & $i + 1)) > 1 Then
+			;ConsoleWrite('@@ Debug(' & @SCripTLineNumber & ') :$i = ' & $GUI_ListView[$i] & @CRLF) ;### Debug Console
+			_GUICtrlEdit_AppendText($sOutput, $Type_Text[$i] & '[' & UBound(Eval("addr_" & $i + 1)) - 1 & '] ')
+			_ObjType_aData(Eval("addr_" & $i + 1), $Type_Text[$i], $GUI_ListView[$i], $TT[$i])
+		Else
+			GUICtrlSetData($TT[$i], $Type_Text[$i])
+			_GUICtrlListView_DeleteAllItems($GUI_ListView[$i])
+		EndIf
+	Next
+	GUISetState(@SW_UNLOCK)
+EndFunc   ;==>_Object_Manager_Traversal
