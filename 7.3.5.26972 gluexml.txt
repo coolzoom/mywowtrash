@@ -1,0 +1,145 @@
+7.3.5.26972 GlueXML
+20221125 加载插件成功！
+
+
+未修改的EXE
+https://model-changing.net/index.php?app=tutorials&module=tutorials&controller=view&id=126&__cf_chl_rt_tk=CzLtkxDXUcRS6gnx1GjhuHVfHE.TFMb8UOUkGVBsAjQ-1669272966-0-gaNycGzNCuU
+at 1B7A8E:
+
+replace A6 with A7
+
+at 86D522:
+
+replace DB with DC
+
+
+
+00007FF76D770000 + 1B869A
+
+地址1
+原始文件时A6 6A，加密过，
+A6 6A D1 70 65 BD 81 53 F1 C2
+
+
+地址2
+DB BF 8F 9D 38 36 40 11 85 F7 D7 7F B5
+
+
+
+用dumpwow后的exe
+地址1 1B868E       
+00007FF6E5C80000 + 1B868E
+74 改为 75 JAE/JZ 改为 JNE/JNZ
+48 8B F0 40 F6 C7 01 74 3E 48 8B 0D ? ? ? ? 48 85 C9 74 32 48 8B D0 E8 ? ? ? ?
+
+74 3E                                         jz      short loc_1B86CE
+75 3E                                         jnz     short loc_1B86CE
+
+
+原始：
+.text:00000000001B8687 48 8B F0                                      mov     rsi, rax
+.text:00000000001B868A 40 F6 C7 01                                   test    dil, 1
+.text:00000000001B868E 74 3E                                         jz      short loc_1B86CE
+.text:00000000001B8690 48 8B 0D 11 D6 6F 01                          mov     rcx, cs:qword_18B5CA8
+.text:00000000001B8697 48 85 C9                                      test    rcx, rcx
+.text:00000000001B869A 74 32                                         jz      short loc_1B86CE ; gluexml patch1, 74 to 75
+.text:00000000001B869C 48 8B D0                                      mov     rdx, rax
+.text:00000000001B869F E8 4C 5D 00 00                                call    sub_1BE3F0
+
+地址2，86E122 取消重命名文件夹为old     00007FF6E5C80000 + 86E122
+74 改 73 JE 改为 JAE
+48 8B 37 48 8B CE E8 ? ? ? ? 84 C0 74 40 4C 8D 05 ? ? ? ? 48 8D 4C 24 ? 4C 8B CE BA ? ? ? ? E8 ? ? ? ? 48 8D 4C 24 ? BA ? ? ? ? E8 ? ? ? ?
+
+74 40                                         jz      short loc_86E164
+73 40                                         jnb     short loc_86E164
+
+原始：
+.text:000000000086E115 48 8B 37                                      mov     rsi, [rdi]
+.text:000000000086E118 48 8B CE                                      mov     rcx, rsi
+.text:000000000086E11B E8 30 F6 AC FF                                call    sub_33D750
+.text:000000000086E120 84 C0                                         test    al, al
+.text:000000000086E122 74 40                                         jz      short loc_86E164 ; gluexml patch2, 74 to 73, je to jae
+.text:000000000086E124 4C 8D 05 81 BE AB 00                          lea     r8, aSOld       ; "%s.old"
+.text:000000000086E12B 48 8D 4C 24 50                                lea     rcx, [rsp+168h+var_118]
+.text:000000000086E130 4C 8B CE                                      mov     r9, rsi
+.text:000000000086E133 BA 04 01 00 00                                mov     edx, 104h
+.text:000000000086E138 E8 03 97 B7 FF                                call    sub_3E7840
+.text:000000000086E13D 48 8D 4C 24 50                                lea     rcx, [rsp+168h+var_118]
+.text:000000000086E142 BA 01 00 00 00                                mov     edx, 1
+.text:000000000086E147 E8 64 FE AC FF                                call    sub_33DFB0
+
+
+修改后的EXE无法加载插件，原因位置
+
+是不是可以吧86E0D0改为nop？
+
+
+
+
+如果再修改，是不是内存修改方便点？？
+
+
+path2 地方可以将4A5AE1全部替换为nop 90 90 90 90 90
+00007FF6E5C80000 + 4A5AE1
+.text:00000000004A5AD5 48 8D 05 F4 8C E0 00                          lea     rax, off_12AE7D0
+.text:00000000004A5ADC 48 89 44 24 30                                mov     [rsp+1B8h+var_188], rax
+.text:00000000004A5AE1 E8 EA 85 3C 00                                call    sub_86E0D0
+.text:00000000004A5AE6 E8 15 61 D3 FF                                call    sub_1DBC00
+.text:00000000004A5AEB E8 00 61 D3 FF                                call    sub_1DBBF0
+
+
+
+
+public static short[] patch1 = { 0x48, 0x8B, 0xF0, 0x40, 0xF6, 0xC7, 0x01, 0x74, 0x3E, 0x48, 0x8B, 0x0D };
+public static byte[] patch1NEW = { 0x48, 0x8B, 0xF0, 0x40, 0xF6, 0xC7, 0x01, 0x75, 0x3E, 0x48, 0x8B, 0x0D };
+public static short[] patch2 = { 0x84, 0xC0, 0x74, 0x40, 0x4C, 0x8D, 0x05 };
+public static byte[] patch2NEW = { 0x84, 0xC0, 0x73, 0x40, 0x4C, 0x8D, 0x05 };
+
+
+PATCH1 实际是a4 !=0 改为 a4 ==0
+
+
+
+
+
+
+
+第三处：
+位置0x872581处，Addon的值为3，所以addon是需要执行这个过程，那么是否需要改为0？
+
+
+
+
+
+改后能显示插件了，但是没有起作用
+
+
+第四处
+
+87076E 
+41 0F 95 C1                                   setnz   r9b
+这个解释为(v5 + 68) != 0)
+subLoadAndCheckTOC这个就是步骤1改的函数
+
+改为
+41 0F 94 C1                                   setz   r9b
+
+        subLoadAndCheckTOC(Str, (__int64)v42, (__int64)&v47, *(_DWORD *)(v5 + 68) != 0);
+        if ( !(unsigned __int8)sub_1D7F70() )
+        {
+          v19 = sub_1D7D40();
+          sub_2C3570(v44, 4294957296i64, v19);
+        }
+
+
+
+
+
+成功！！
+
+
+
+
+
+
+
